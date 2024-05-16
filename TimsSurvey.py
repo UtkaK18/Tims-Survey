@@ -1,4 +1,6 @@
 import time
+
+import selenium
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -16,11 +18,18 @@ def survey_code(driver, surveycode):
     return driver
 
 def feedback_form(driver):
-    time.sleep(10)
-    driver.find_element(By.ID, "QID14-1-label").click()
-    time.sleep(7)
-    driver.find_element(By.ID, "NextButton").click()
-    return driver
+    try:
+        WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.ID, "QID14-1-label")))
+        driver.find_element(By.ID, "QID14-1-label").click()
+    except selenium.common.exceptions.TimeoutException:
+        print("Loading took too much time!")
+    except selenium.common.exceptions.NoSuchWindowException:
+        print("The browser window was closed unexpectedly.")
+    except selenium.common.exceptions.WebDriverException as e:
+        print(f"WebDriverException occurred: {e}")
+    finally:
+        if driver:
+            driver.quit()
 
 def satisfaction_form(driver):
     time.sleep(7)
@@ -66,7 +75,7 @@ def satisfaction_survey(driver):
     driver.find_element(By.CSS_SELECTOR, "label[for=\"QR~QID23~10~1\"]").click()
     driver.find_element(By.CSS_SELECTOR, "label[for=\"QR~QID23~11~1\"]").click()
     driver.find_element(By.ID, "NextButton").click()
-    time.sleep(7)
+    time.sleep(15)
     driver.find_element(By.ID, "NextButton").click()
     return driver
 

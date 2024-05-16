@@ -6,7 +6,7 @@ from webdriver_setup import setup_driver
 tims_url = 'https://telltims.ca/'
 
 def main():
-    surveycode= "936148802131425040648"
+    surveycode= "139153302215406040642"
     driver = setup_driver(tims_url)
     driver = survey_code(driver, surveycode)
     driver = feedback_form(driver)
@@ -26,6 +26,7 @@ def main():
     driver = likelihood_of_repurchasing(driver)
     driver = recognising_team_member(driver)
     get_code(driver, surveycode)
+    driver.quit()
 
 if __name__ == "__main__":
     main()
